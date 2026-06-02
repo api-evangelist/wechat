@@ -22,7 +22,7 @@ type: Index
 access: 3rd-Party
 position: Consumer
 created: '2026-05-22'
-modified: '2026-05-23'
+modified: '2026-05-29'
 apis:
 - aid: wechat:wechat-mini-programs-server-api
   name: WeChat Mini Programs Server API
@@ -96,6 +96,8 @@ apis:
     type: CodeExamples
   - url: https://github.com/wechatpay-apiv3/CertificateDownloader
     type: CLI
+  - url: asyncapi/wechat-webhooks-asyncapi.yml
+    type: AsyncAPI
 - aid: wechat:wechat-pay-apiv3-service-provider
   name: WeChat Pay APIv3 (Service Provider / Partner)
   description: WeChat Pay's APIv3 in "service provider" mode, used by payment platforms and ISVs to onboard and operate sub-merchants. Adds combined-order JSAPI/Native/App payments, sub-merchant onboarding ("特约商户进件"), sub-merchant settlement and bill journals, partner-mode refunds, profit sharing across sub-merchants, marketing tooling, and consumer complaint handling on behalf of sub-merchants.
@@ -194,6 +196,8 @@ apis:
     type: Documentation
   - url: https://mp.weixin.qq.com/
     type: Portal
+  - url: asyncapi/wechat-webhooks-asyncapi.yml
+    type: AsyncAPI
 - aid: wechat:wechat-work-api
   name: WeChat Work (WeCom) API
   description: Server API for Enterprise WeChat / WeCom — Tencent's enterprise collaboration suite. All calls are HTTPS/JSON, UTF-8 encoded, and require an access token. Covers Contacts management (members, departments, tags), messaging & event callbacks, group chat sessions and passive reply, External Contacts (customer management, departing-employee inheritance, customer groups, moments), web OAuth / Web login components / secondary verification, Office Automation (mail, document collaboration, calendar, meetings, cloud drive, livestreaming), enterprise payments (red envelopes, employee payment, external collections / invoicing), conversation-content archive for compliance, school/parent communication, civic / grid services, and the AI & data zone for analytics and knowledge bases.
@@ -217,6 +221,8 @@ apis:
     type: Login
   - url: https://github.com/sbzhu/weworkapi_python
     type: SDK
+  - url: asyncapi/wechat-webhooks-asyncapi.yml
+    type: AsyncAPI
 - aid: wechat:wechat-cloud-hosting-api
   name: WeChat Cloud Hosting API
   description: WeChat Cloud Hosting (微信云托管) is Tencent's cloud-native, ops-free container deployment service tightly integrated into the WeChat ecosystem. Documented as "a cloud-native, operations-free, highly available service deployment solution that requires no servers and enables deployment in just one minute." Exposes container deployment APIs, serverless MySQL, object storage with CDN and security validation, native token access (no auth layer needed to call WeChat APIs), the cloud-call service relaying WeChat APIs, message-push routing, WeChat Pay integration without encryption handling, gray deployment and version rollback, real-time log search, resource monitoring, custom alerts, and Enterprise WeChat robot notifications. Supports Node.js, Go, Python, and Java containers plus official templates.

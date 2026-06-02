@@ -1,0 +1,991 @@
+asyncapi: 2.6.0
+
+info:
+  title: WeChat Webhooks (Official Accounts, WeChat Pay APIv3, WeCom)
+  version: 1.0.0
+  description: |
+    AsyncAPI description of the publicly documented WeChat (Weixin) webhook
+    surfaces. WeChat does not expose a public WebSocket / streaming endpoint
+    for third-party developers — its event-driven surface is delivered as
+    HTTP POST callbacks ("server push" / "message push" / "payment
+    notification") to URLs that developers register in the relevant WeChat
+    console.
+
+    This document models three of WeChat's documented callback surfaces:
+
+    1. **WeChat Official Accounts message and event push** (Service Account
+       and Subscription Account). Posts XML payloads to the URL configured
+       in `mp.weixin.qq.com -> Settings & Development -> Basic
+       configuration -> Server configuration`. Authenticity is established
+       by a `signature` / `timestamp` / `nonce` query-string verification
+       against the configured `Token`, with optional AES message encryption
+       (`encrypt_type=aes`).
+
+    2. **WeChat Pay APIv3 merchant notifications**. Posts JSON payloads to
+       the `notify_url` registered when the merchant placed the order.
+       Bodies are encrypted with AES-256-GCM using the merchant's APIv3
+       key, and the request is signed with `Wechatpay-Signature`,
+       `Wechatpay-Timestamp`, `Wechatpay-Nonce`, and `Wechatpay-Serial`
+       headers tied to the WeChat Pay platform certificate.
+
+    3. **WeChat Work (WeCom) message and event callbacks**. Posts XML
+       payloads to the URL configured for each WeCom app, secured by the
+       same `signature` / `timestamp` / `nonce` verification scheme used
+       by Official Accounts, and using AES message encryption based on
+       the app's `EncodingAESKey`.
+
+    Only events that are explicitly documented in Tencent's WeChat / WeChat
+    Pay / WeCom developer documentation are included.
+  contact:
+    name: WeChat Developer Community
+    url: https://developers.weixin.qq.com/community/
+  license:
+    name: Proprietary
+
+servers:
+  officialAccountCallback:
+    url: https://{yourDomain}{callbackPath}
+    protocol: https
+    description: |
+      The HTTPS URL configured for an Official Account at
+      `mp.weixin.qq.com -> Settings & Development -> Basic configuration ->
+      Server configuration`. WeChat servers POST message and event push
+      XML payloads to this endpoint.
+    variables:
+      yourDomain:
+        description: The domain of the URL configured as the Official Account callback URL.
+        default: example.com
+      callbackPath:
+        description: Path component of the configured callback URL.
+        default: /wechat/officialaccount
+    security:
+      - officialAccountSignature: []
+
+  wechatPayCallback:
+    url: https://{yourDomain}{notifyPath}
+    protocol: https
+    description: |
+      The HTTPS URL provided as `notify_url` when the merchant placed an
+      order via WeChat Pay APIv3. WeChat Pay POSTs JSON payment / refund
+      notifications to this endpoint.
+    variables:
+      yourDomain:
+        description: The domain of the URL registered as `notify_url`.
+        default: example.com
+      notifyPath:
+        description: Path component of the `notify_url`.
+        default: /wechatpay/notify
+    security:
+      - wechatPaySignature: []
+
+  wecomCallback:
+    url: https://{yourDomain}{callbackPath}
+    protocol: https
+    description: |
+      The HTTPS URL configured for a WeChat Work (WeCom) self-built app
+      at `work.weixin.qq.com -> Application Management -> <app> -> Receive
+      Messages -> URL`. WeCom servers POST message and event XML payloads
+      to this endpoint.
+    variables:
+      yourDomain:
+        description: The domain of the URL configured as the WeCom app callback URL.
+        default: example.com
+      callbackPath:
+        description: Path component of the configured WeCom callback URL.
+        default: /wecom/callback
+    security:
+      - wecomSignature: []
+
+defaultContentType: application/xml
+
+channels:
+  # ---------------------------------------------------------------------------
+  # WeChat Official Accounts — ordinary message push
+  # https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Receiving_standard_messages.html
+  # ---------------------------------------------------------------------------
+  officialaccount/message/text:
+    description: |
+      A follower sent a text message to the Official Account.
+    publish:
+      operationId: receiveOfficialAccountTextMessage
+      summary: Receive a text message from a follower.
+      message:
+        $ref: '#/components/messages/OfficialAccountTextMessage'
+
+  officialaccount/message/image:
+    description: |
+      A follower sent an image message to the Official Account.
+    publish:
+      operationId: receiveOfficialAccountImageMessage
+      summary: Receive an image message from a follower.
+      message:
+        $ref: '#/components/messages/OfficialAccountImageMessage'
+
+  officialaccount/message/voice:
+    description: |
+      A follower sent a voice message to the Official Account.
+    publish:
+      operationId: receiveOfficialAccountVoiceMessage
+      summary: Receive a voice message from a follower.
+      message:
+        $ref: '#/components/messages/OfficialAccountVoiceMessage'
+
+  officialaccount/message/video:
+    description: |
+      A follower sent a video message to the Official Account.
+    publish:
+      operationId: receiveOfficialAccountVideoMessage
+      summary: Receive a video message from a follower.
+      message:
+        $ref: '#/components/messages/OfficialAccountVideoMessage'
+
+  officialaccount/message/shortvideo:
+    description: |
+      A follower sent a short video message to the Official Account.
+    publish:
+      operationId: receiveOfficialAccountShortVideoMessage
+      summary: Receive a short video message from a follower.
+      message:
+        $ref: '#/components/messages/OfficialAccountShortVideoMessage'
+
+  officialaccount/message/location:
+    description: |
+      A follower sent a location message to the Official Account.
+    publish:
+      operationId: receiveOfficialAccountLocationMessage
+      summary: Receive a location message from a follower.
+      message:
+        $ref: '#/components/messages/OfficialAccountLocationMessage'
+
+  officialaccount/message/link:
+    description: |
+      A follower sent a link message to the Official Account.
+    publish:
+      operationId: receiveOfficialAccountLinkMessage
+      summary: Receive a link message from a follower.
+      message:
+        $ref: '#/components/messages/OfficialAccountLinkMessage'
+
+  # ---------------------------------------------------------------------------
+  # WeChat Official Accounts — event push
+  # https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Receiving_event_pushes.html
+  # ---------------------------------------------------------------------------
+  officialaccount/event/subscribe:
+    description: |
+      A user subscribed to the Official Account, or scanned a parameter
+      QR code while not yet subscribed.
+    publish:
+      operationId: receiveOfficialAccountSubscribeEvent
+      summary: Receive a subscribe event.
+      message:
+        $ref: '#/components/messages/OfficialAccountSubscribeEvent'
+
+  officialaccount/event/unsubscribe:
+    description: |
+      A user unsubscribed from the Official Account.
+    publish:
+      operationId: receiveOfficialAccountUnsubscribeEvent
+      summary: Receive an unsubscribe event.
+      message:
+        $ref: '#/components/messages/OfficialAccountUnsubscribeEvent'
+
+  officialaccount/event/scan:
+    description: |
+      An already-subscribed user scanned a parameter QR code generated
+      by the Official Account.
+    publish:
+      operationId: receiveOfficialAccountScanEvent
+      summary: Receive a SCAN event from a subscribed user.
+      message:
+        $ref: '#/components/messages/OfficialAccountScanEvent'
+
+  officialaccount/event/location:
+    description: |
+      A follower reported their location (after enabling reporting in
+      the Official Account "geolocation report" setting).
+    publish:
+      operationId: receiveOfficialAccountLocationEvent
+      summary: Receive a LOCATION event.
+      message:
+        $ref: '#/components/messages/OfficialAccountLocationEvent'
+
+  officialaccount/event/menu/click:
+    description: |
+      A follower tapped a CLICK-type item in the Official Account's
+      custom menu.
+    publish:
+      operationId: receiveOfficialAccountMenuClickEvent
+      summary: Receive a CLICK menu event.
+      message:
+        $ref: '#/components/messages/OfficialAccountMenuClickEvent'
+
+  officialaccount/event/menu/view:
+    description: |
+      A follower tapped a VIEW-type item in the Official Account's
+      custom menu (a URL link).
+    publish:
+      operationId: receiveOfficialAccountMenuViewEvent
+      summary: Receive a VIEW menu event.
+      message:
+        $ref: '#/components/messages/OfficialAccountMenuViewEvent'
+
+  officialaccount/event/templatemessage/finish:
+    description: |
+      Asynchronous delivery result for a template message that was sent
+      via the Official Account template message API.
+    publish:
+      operationId: receiveOfficialAccountTemplateSendJobFinishEvent
+      summary: Receive a TEMPLATESENDJOBFINISH event.
+      message:
+        $ref: '#/components/messages/OfficialAccountTemplateSendJobFinishEvent'
+
+  # ---------------------------------------------------------------------------
+  # WeChat Pay APIv3 — merchant notifications
+  # https://pay.weixin.qq.com/wiki/doc/apiv3/en/index.shtml
+  # ---------------------------------------------------------------------------
+  wechatpay/transaction/success:
+    description: |
+      WeChat Pay successfully processed a payment for an order placed by
+      the merchant. The encrypted resource decrypts to a Transaction
+      object with `trade_state=SUCCESS`.
+    publish:
+      operationId: receiveWechatPayTransactionSuccess
+      summary: Receive a payment success notification.
+      message:
+        $ref: '#/components/messages/WechatPayTransactionSuccessNotification'
+
+  wechatpay/refund/success:
+    description: |
+      WeChat Pay completed processing a refund initiated by the merchant.
+      The encrypted resource decrypts to a Refund object whose status
+      indicates the final refund outcome.
+    publish:
+      operationId: receiveWechatPayRefundSuccess
+      summary: Receive a refund result notification.
+      message:
+        $ref: '#/components/messages/WechatPayRefundNotification'
+
+  # ---------------------------------------------------------------------------
+  # WeChat Work (WeCom) — message and event callbacks
+  # https://developer.work.weixin.qq.com/document/path/90930
+  # https://developer.work.weixin.qq.com/document/path/90240
+  # ---------------------------------------------------------------------------
+  wecom/message/text:
+    description: |
+      A WeCom member sent a text message to a self-built app.
+    publish:
+      operationId: receiveWecomTextMessage
+      summary: Receive a WeCom text message.
+      message:
+        $ref: '#/components/messages/WecomTextMessage'
+
+  wecom/event/subscribe:
+    description: |
+      A WeCom member followed / was added to a self-built app's visible
+      range.
+    publish:
+      operationId: receiveWecomSubscribeEvent
+      summary: Receive a WeCom subscribe event.
+      message:
+        $ref: '#/components/messages/WecomSubscribeEvent'
+
+  wecom/event/unsubscribe:
+    description: |
+      A WeCom member unfollowed / was removed from a self-built app's
+      visible range.
+    publish:
+      operationId: receiveWecomUnsubscribeEvent
+      summary: Receive a WeCom unsubscribe event.
+      message:
+        $ref: '#/components/messages/WecomUnsubscribeEvent'
+
+  wecom/event/menu/click:
+    description: |
+      A WeCom member tapped a CLICK-type item in a self-built app's
+      custom menu.
+    publish:
+      operationId: receiveWecomMenuClickEvent
+      summary: Receive a WeCom CLICK menu event.
+      message:
+        $ref: '#/components/messages/WecomMenuClickEvent'
+
+components:
+  securitySchemes:
+    officialAccountSignature:
+      type: httpApiKey
+      name: signature
+      in: query
+      description: |
+        SHA-1 hash of the sorted concatenation of the configured Token,
+        `timestamp`, and `nonce`. Sent as the `signature` query parameter
+        on every message/event push from WeChat to the Official Account
+        callback URL. Used together with the `timestamp` and `nonce`
+        query parameters to verify the request originated from WeChat.
+
+    wechatPaySignature:
+      type: httpApiKey
+      name: Wechatpay-Signature
+      in: header
+      description: |
+        SHA256-with-RSA signature, encoded as Base64, of the canonical
+        request derived from `Wechatpay-Timestamp`, `Wechatpay-Nonce`,
+        and the request body, computed with the WeChat Pay platform
+        certificate identified by `Wechatpay-Serial`.
+
+    wecomSignature:
+      type: httpApiKey
+      name: msg_signature
+      in: query
+      description: |
+        SHA-1 hash of the sorted concatenation of the WeCom app's Token,
+        `timestamp`, `nonce`, and the encrypted XML message body, sent
+        as the `msg_signature` query parameter on every WeCom callback.
+
+  messages:
+    # -------------------------------------------------------------------------
+    # Official Account messages
+    # -------------------------------------------------------------------------
+    OfficialAccountTextMessage:
+      name: OfficialAccountTextMessage
+      title: Official Account Text Message Push
+      summary: A follower sent a text message to the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountTextMessagePayload'
+
+    OfficialAccountImageMessage:
+      name: OfficialAccountImageMessage
+      title: Official Account Image Message Push
+      summary: A follower sent an image message to the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountImageMessagePayload'
+
+    OfficialAccountVoiceMessage:
+      name: OfficialAccountVoiceMessage
+      title: Official Account Voice Message Push
+      summary: A follower sent a voice message to the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountVoiceMessagePayload'
+
+    OfficialAccountVideoMessage:
+      name: OfficialAccountVideoMessage
+      title: Official Account Video Message Push
+      summary: A follower sent a video message to the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountVideoMessagePayload'
+
+    OfficialAccountShortVideoMessage:
+      name: OfficialAccountShortVideoMessage
+      title: Official Account Short Video Message Push
+      summary: A follower sent a short video message to the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountShortVideoMessagePayload'
+
+    OfficialAccountLocationMessage:
+      name: OfficialAccountLocationMessage
+      title: Official Account Location Message Push
+      summary: A follower sent a location message to the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountLocationMessagePayload'
+
+    OfficialAccountLinkMessage:
+      name: OfficialAccountLinkMessage
+      title: Official Account Link Message Push
+      summary: A follower sent a link message to the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountLinkMessagePayload'
+
+    # -------------------------------------------------------------------------
+    # Official Account events
+    # -------------------------------------------------------------------------
+    OfficialAccountSubscribeEvent:
+      name: OfficialAccountSubscribeEvent
+      title: Subscribe Event Push
+      summary: A user subscribed to the Official Account, or scanned a parameter QR code while not subscribed.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountSubscribeEventPayload'
+
+    OfficialAccountUnsubscribeEvent:
+      name: OfficialAccountUnsubscribeEvent
+      title: Unsubscribe Event Push
+      summary: A user unsubscribed from the Official Account.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountUnsubscribeEventPayload'
+
+    OfficialAccountScanEvent:
+      name: OfficialAccountScanEvent
+      title: SCAN Event Push
+      summary: A subscribed follower scanned a parameter QR code.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountScanEventPayload'
+
+    OfficialAccountLocationEvent:
+      name: OfficialAccountLocationEvent
+      title: LOCATION Event Push
+      summary: A follower reported their location.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountLocationEventPayload'
+
+    OfficialAccountMenuClickEvent:
+      name: OfficialAccountMenuClickEvent
+      title: CLICK Menu Event Push
+      summary: A follower tapped a CLICK-type custom menu item.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountMenuClickEventPayload'
+
+    OfficialAccountMenuViewEvent:
+      name: OfficialAccountMenuViewEvent
+      title: VIEW Menu Event Push
+      summary: A follower tapped a VIEW-type custom menu item.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountMenuViewEventPayload'
+
+    OfficialAccountTemplateSendJobFinishEvent:
+      name: OfficialAccountTemplateSendJobFinishEvent
+      title: TEMPLATESENDJOBFINISH Event Push
+      summary: Asynchronous delivery result for a template message send.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/OfficialAccountTemplateSendJobFinishEventPayload'
+
+    # -------------------------------------------------------------------------
+    # WeChat Pay APIv3 notifications
+    # -------------------------------------------------------------------------
+    WechatPayTransactionSuccessNotification:
+      name: WechatPayTransactionSuccessNotification
+      title: WeChat Pay Transaction Success Notification
+      summary: Asynchronous notification that a payment succeeded.
+      contentType: application/json
+      headers:
+        $ref: '#/components/schemas/WechatPayNotificationHeaders'
+      payload:
+        $ref: '#/components/schemas/WechatPayNotificationEnvelope'
+
+    WechatPayRefundNotification:
+      name: WechatPayRefundNotification
+      title: WeChat Pay Refund Notification
+      summary: Asynchronous notification that a refund was processed.
+      contentType: application/json
+      headers:
+        $ref: '#/components/schemas/WechatPayNotificationHeaders'
+      payload:
+        $ref: '#/components/schemas/WechatPayNotificationEnvelope'
+
+    # -------------------------------------------------------------------------
+    # WeChat Work (WeCom) callbacks
+    # -------------------------------------------------------------------------
+    WecomTextMessage:
+      name: WecomTextMessage
+      title: WeCom Text Message Push
+      summary: A WeCom member sent a text message to a self-built app.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/WecomTextMessagePayload'
+
+    WecomSubscribeEvent:
+      name: WecomSubscribeEvent
+      title: WeCom Subscribe Event Push
+      summary: A WeCom member was added to a self-built app's visible range.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/WecomSubscribeEventPayload'
+
+    WecomUnsubscribeEvent:
+      name: WecomUnsubscribeEvent
+      title: WeCom Unsubscribe Event Push
+      summary: A WeCom member was removed from a self-built app's visible range.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/WecomUnsubscribeEventPayload'
+
+    WecomMenuClickEvent:
+      name: WecomMenuClickEvent
+      title: WeCom CLICK Menu Event Push
+      summary: A WeCom member tapped a CLICK-type custom menu item.
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/WecomMenuClickEventPayload'
+
+  schemas:
+    # -------------------------------------------------------------------------
+    # Official Account base envelope and message types
+    # -------------------------------------------------------------------------
+    OfficialAccountBaseEnvelope:
+      type: object
+      description: |
+        Common XML fields present in every Official Account message and
+        event push. WeChat encodes payloads as XML inside a root
+        `<xml>...</xml>` element; the property names below mirror those
+        XML element names.
+      properties:
+        ToUserName:
+          type: string
+          description: The Official Account's OpenID (recipient).
+        FromUserName:
+          type: string
+          description: The follower's OpenID (sender).
+        CreateTime:
+          type: integer
+          description: Unix timestamp of message creation.
+        MsgType:
+          type: string
+          description: WeChat message type (`text`, `image`, `voice`, `video`, `shortvideo`, `location`, `link`, or `event`).
+      required:
+        - ToUserName
+        - FromUserName
+        - CreateTime
+        - MsgType
+
+    OfficialAccountTextMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [text]
+            Content:
+              type: string
+              description: Text content sent by the follower.
+            MsgId:
+              type: integer
+              format: int64
+              description: 64-bit message id.
+
+    OfficialAccountImageMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [image]
+            PicUrl:
+              type: string
+              description: HTTPS URL of the image.
+            MediaId:
+              type: string
+              description: Identifier for retrieving the image via the multimedia file download API.
+            MsgId:
+              type: integer
+              format: int64
+
+    OfficialAccountVoiceMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [voice]
+            MediaId:
+              type: string
+              description: Identifier for retrieving the voice clip.
+            Format:
+              type: string
+              description: Voice format (e.g. `amr`).
+            MsgId:
+              type: integer
+              format: int64
+            Recognition:
+              type: string
+              description: |
+                Speech-recognition transcription of the voice clip (only
+                present when the Official Account has speech recognition
+                enabled).
+
+    OfficialAccountVideoMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [video]
+            MediaId:
+              type: string
+              description: Identifier for retrieving the video.
+            ThumbMediaId:
+              type: string
+              description: Identifier for the video thumbnail.
+            MsgId:
+              type: integer
+              format: int64
+
+    OfficialAccountShortVideoMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [shortvideo]
+            MediaId:
+              type: string
+            ThumbMediaId:
+              type: string
+            MsgId:
+              type: integer
+              format: int64
+
+    OfficialAccountLocationMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [location]
+            Location_X:
+              type: number
+              description: Latitude.
+            Location_Y:
+              type: number
+              description: Longitude.
+            Scale:
+              type: integer
+              description: Map zoom level.
+            Label:
+              type: string
+              description: Human-readable place label.
+            MsgId:
+              type: integer
+              format: int64
+
+    OfficialAccountLinkMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [link]
+            Title:
+              type: string
+              description: Title of the shared link.
+            Description:
+              type: string
+              description: Description of the shared link.
+            Url:
+              type: string
+              description: The shared URL.
+            MsgId:
+              type: integer
+              format: int64
+
+    # -------------------------------------------------------------------------
+    # Official Account event payloads
+    # -------------------------------------------------------------------------
+    OfficialAccountEventBase:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [event]
+            Event:
+              type: string
+              description: WeChat event type.
+
+    OfficialAccountSubscribeEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [subscribe]
+            EventKey:
+              type: string
+              description: |
+                For users who subscribed via a parameter QR code, this is
+                `qrscene_<scene>` where `<scene>` is the parameter value
+                set when the QR code was generated. Empty for organic
+                subscribes.
+            Ticket:
+              type: string
+              description: QR code ticket (present when subscribing via a parameter QR code).
+
+    OfficialAccountUnsubscribeEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [unsubscribe]
+
+    OfficialAccountScanEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [SCAN]
+            EventKey:
+              type: string
+              description: Scene value defined when the QR code was generated.
+            Ticket:
+              type: string
+              description: QR code ticket.
+
+    OfficialAccountLocationEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [LOCATION]
+            Latitude:
+              type: number
+              description: Reported latitude.
+            Longitude:
+              type: number
+              description: Reported longitude.
+            Precision:
+              type: number
+              description: Reported location precision.
+
+    OfficialAccountMenuClickEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [CLICK]
+            EventKey:
+              type: string
+              description: The `key` value configured for the clicked custom menu item.
+
+    OfficialAccountMenuViewEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [VIEW]
+            EventKey:
+              type: string
+              description: The URL configured for the tapped VIEW-type custom menu item.
+
+    OfficialAccountTemplateSendJobFinishEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/OfficialAccountEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [TEMPLATESENDJOBFINISH]
+            MsgID:
+              type: integer
+              format: int64
+              description: ID of the template message send job.
+            Status:
+              type: string
+              description: |
+                Final delivery status — typically `success`, `failed:user
+                block` (user blocked the account), or `failed:system
+                failed` (delivery system failure).
+
+    # -------------------------------------------------------------------------
+    # WeChat Pay APIv3 notification envelope
+    # -------------------------------------------------------------------------
+    WechatPayNotificationHeaders:
+      type: object
+      description: |
+        HTTP headers attached by WeChat Pay to every APIv3 notification.
+        These headers MUST be verified before the encrypted resource is
+        decrypted.
+      properties:
+        Wechatpay-Timestamp:
+          type: string
+          description: Unix timestamp at which the notification was signed.
+        Wechatpay-Nonce:
+          type: string
+          description: Random nonce included in the signed canonical request.
+        Wechatpay-Serial:
+          type: string
+          description: Serial number of the WeChat Pay platform certificate used to sign the notification.
+        Wechatpay-Signature:
+          type: string
+          description: Base64-encoded SHA256-with-RSA signature of the canonical request.
+      required:
+        - Wechatpay-Timestamp
+        - Wechatpay-Nonce
+        - Wechatpay-Serial
+        - Wechatpay-Signature
+
+    WechatPayNotificationEnvelope:
+      type: object
+      description: |
+        Outer envelope of a WeChat Pay APIv3 notification. The business
+        payload lives inside the `resource` object as AES-256-GCM
+        ciphertext keyed by the merchant's APIv3 key.
+      properties:
+        id:
+          type: string
+          description: Unique notification id.
+        create_time:
+          type: string
+          format: date-time
+          description: RFC3339 timestamp when the notification was created.
+        event_type:
+          type: string
+          description: |
+            Notification event type — for example `TRANSACTION.SUCCESS`
+            for a paid order, or `REFUND.SUCCESS` / `REFUND.ABNORMAL` /
+            `REFUND.CLOSED` for refund outcomes.
+        resource_type:
+          type: string
+          description: Type of the encrypted resource payload (typically `encrypt-resource`).
+        summary:
+          type: string
+          description: Short human-readable summary of the notification.
+        resource:
+          $ref: '#/components/schemas/WechatPayNotificationResource'
+      required:
+        - id
+        - create_time
+        - event_type
+        - resource_type
+        - resource
+
+    WechatPayNotificationResource:
+      type: object
+      description: |
+        Encrypted business payload of a WeChat Pay APIv3 notification.
+        Decrypt `ciphertext` with AES-256-GCM using the merchant's APIv3
+        key, the supplied `nonce`, and `associated_data` as AAD to obtain
+        the plaintext business object (Transaction, Refund, etc.).
+      properties:
+        algorithm:
+          type: string
+          description: Symmetric algorithm used to encrypt the payload (typically `AEAD_AES_256_GCM`).
+        ciphertext:
+          type: string
+          description: Base64-encoded ciphertext of the business payload.
+        associated_data:
+          type: string
+          description: Additional authenticated data passed to AES-GCM.
+        original_type:
+          type: string
+          description: Plaintext business object type (e.g. `transaction`, `refund`).
+        nonce:
+          type: string
+          description: Nonce used during AES-GCM encryption.
+      required:
+        - algorithm
+        - ciphertext
+        - nonce
+
+    # -------------------------------------------------------------------------
+    # WeChat Work (WeCom) callbacks
+    # -------------------------------------------------------------------------
+    WecomBaseEnvelope:
+      type: object
+      description: |
+        Common fields in WeCom message and event push XML payloads. WeCom
+        uses the same root `<xml>` element as Official Accounts but adds
+        `AgentID` to identify the self-built app.
+      properties:
+        ToUserName:
+          type: string
+          description: WeCom corp id (recipient).
+        FromUserName:
+          type: string
+          description: WeCom member UserID (sender).
+        CreateTime:
+          type: integer
+          description: Unix timestamp of message creation.
+        MsgType:
+          type: string
+          description: WeCom message type (`text`, `image`, `voice`, `video`, `location`, `link`, or `event`).
+        AgentID:
+          type: integer
+          description: Identifier of the self-built WeCom app receiving the message.
+      required:
+        - ToUserName
+        - FromUserName
+        - CreateTime
+        - MsgType
+        - AgentID
+
+    WecomTextMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/WecomBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [text]
+            Content:
+              type: string
+              description: Text content sent by the member.
+            MsgId:
+              type: integer
+              format: int64
+
+    WecomEventBase:
+      allOf:
+        - $ref: '#/components/schemas/WecomBaseEnvelope'
+        - type: object
+          properties:
+            MsgType:
+              type: string
+              enum: [event]
+            Event:
+              type: string
+              description: WeCom event type.
+
+    WecomSubscribeEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/WecomEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [subscribe]
+
+    WecomUnsubscribeEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/WecomEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [unsubscribe]
+
+    WecomMenuClickEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/WecomEventBase'
+        - type: object
+          properties:
+            Event:
+              type: string
+              enum: [click]
+            EventKey:
+              type: string
+              description: The `key` value configured for the clicked custom menu item.
+
+externalDocs:
+  description: |
+    WeChat Official Accounts message / event push, WeChat Pay APIv3
+    notifications, and WeChat Work (WeCom) callback documentation.
+  url: https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Receiving_standard_messages.html
