@@ -1,0 +1,396 @@
+{
+  "item": [
+    {
+      "id": "45c27776-3c50-40c6-a1d8-54f094abbe60",
+      "name": "Login",
+      "description": {
+        "content": "Mini Program login and session exchange.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "52f32545-aa4c-4c99-a56c-a991436f907a",
+          "name": "auth.code2Session",
+          "request": {
+            "name": "auth.code2Session",
+            "description": {
+              "content": "Exchange a temporary login `code` returned by `wx.login()` in the Mini\nProgram client for a stable `openid` and `session_key`. The\n`session_key` is used to decrypt encrypted user data delivered by other\nMini Program APIs.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sns",
+                "jscode2session"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "appid",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppID."
+                },
+                {
+                  "disabled": false,
+                  "key": "secret",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppSecret."
+                },
+                {
+                  "disabled": false,
+                  "key": "js_code",
+                  "value": "<string>",
+                  "description": "(Required) Temporary login credential `code` from `wx.login()`."
+                },
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<string>",
+                  "description": "(Required) Must be `authorization_code`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e1b630c4-fb05-49c4-801b-a897ed1ad091",
+              "name": "Session exchange result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sns",
+                    "jscode2session"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "appid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "js_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"openid\": \"string\",\n  \"session_key\": \"string\",\n  \"unionid\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "860750d6-5892-4520-9d9b-e1a1f5394563",
+      "name": "Access Token",
+      "description": {
+        "content": "Application-level access token management.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ac9706cd-7fa7-4b15-a085-ca8f327ae0ee",
+          "name": "auth.getAccessToken",
+          "request": {
+            "name": "auth.getAccessToken",
+            "description": {
+              "content": "Obtain the global application `access_token` for a Mini Program.\nReturned tokens are valid for 7200 seconds and must be cached and\nre-used across the application; concurrent calls will overwrite each\nother.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cgi-bin",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<string>",
+                  "description": "(Required) Must be set to `client_credential`."
+                },
+                {
+                  "disabled": false,
+                  "key": "appid",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppID from the WeChat Official Accounts Platform."
+                },
+                {
+                  "disabled": false,
+                  "key": "secret",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppSecret."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e56602b6-09b7-45c8-a9d2-77b5729b7023",
+              "name": "Access token response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cgi-bin",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "grant_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "secret",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"ACCESS_TOKEN\",\n  \"expires_in\": 7200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9c580126-5e8c-472f-bd0e-c858fd6148f9",
+      "name": "User Information",
+      "description": {
+        "content": "User identity (UnionID) lookups.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8841b24d-d109-4cb0-a532-88a7ebb152a9",
+          "name": "auth.getPaidUnionId",
+          "request": {
+            "name": "auth.getPaidUnionId",
+            "description": {
+              "content": "Retrieve a user's UnionID after they have completed a WeChat Pay\ntransaction in the Mini Program. Requires either `openid` plus\n`transaction_id`, or `openid` plus `mch_id` and `out_trade_no`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wxa",
+                "getpaidunionid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access_token",
+                  "value": "<string>",
+                  "description": "(Required) Application access token from `auth.getAccessToken`."
+                },
+                {
+                  "disabled": false,
+                  "key": "openid",
+                  "value": "<string>",
+                  "description": "(Required) The user's openid in the Mini Program."
+                },
+                {
+                  "disabled": false,
+                  "key": "transaction_id",
+                  "value": "<string>",
+                  "description": "WeChat Pay transaction id (optional if `mch_id` + `out_trade_no` are supplied)."
+                },
+                {
+                  "disabled": false,
+                  "key": "mch_id",
+                  "value": "<string>",
+                  "description": "WeChat Pay merchant id (used with `out_trade_no`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "out_trade_no",
+                  "value": "<string>",
+                  "description": "Merchant-side order number (used with `mch_id`)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dbdbeb48-4bbc-4aae-9b0f-91b5ef625419",
+              "name": "Paid UnionID result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wxa",
+                    "getpaidunionid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "openid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transaction_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mch_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "out_trade_no",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"unionid\": \"string\",\n  \"errcode\": 6320,\n  \"errmsg\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.weixin.qq.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c7952778-4bb8-4e3d-b934-3a1ed2555b7e",
+    "name": "WeChat Mini Program Server API (subset)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side\nAPI hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed\nto bootstrap a Mini Program backend: exchanging a temporary login code for\na session via `auth.code2Session`, minting an application access token via\n`auth.getAccessToken`, and retrieving a paid-only UnionID via\n`auth.getPaidUnionId`.\n\nAuthentication for these foundational endpoints is keyed on the Mini\nProgram's AppID and AppSecret, passed as query parameters. Subsequent\nbusiness APIs (template messages, content moderation, analytics, QR codes,\nlogistics, etc.) require the `access_token` obtained from\n`auth.getAccessToken`.\n\n\nContact Support:\n Name: WeChat Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

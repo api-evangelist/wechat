@@ -1,0 +1,145 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WeChat Mini Program Server API (subset)",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Access Token",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "auth.getAccessToken",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.weixin.qq.com/cgi-bin/token",
+            "params": [
+              {
+                "name": "grant_type",
+                "value": "",
+                "type": "query",
+                "description": "Must be set to `client_credential`."
+              },
+              {
+                "name": "appid",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppID from the WeChat Official Accounts Platform."
+              },
+              {
+                "name": "secret",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppSecret."
+              }
+            ]
+          },
+          "docs": "Obtain the global application `access_token` for a Mini Program.\nReturned tokens are valid for 7200 seconds and must be cached and\nre-used across the application; concurrent calls will overwrite each\nother.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Login",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "auth.code2Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.weixin.qq.com/sns/jscode2session",
+            "params": [
+              {
+                "name": "appid",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppID."
+              },
+              {
+                "name": "secret",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppSecret."
+              },
+              {
+                "name": "js_code",
+                "value": "",
+                "type": "query",
+                "description": "Temporary login credential `code` from `wx.login()`."
+              },
+              {
+                "name": "grant_type",
+                "value": "",
+                "type": "query",
+                "description": "Must be `authorization_code`."
+              }
+            ]
+          },
+          "docs": "Exchange a temporary login `code` returned by `wx.login()` in the Mini\nProgram client for a stable `openid` and `session_key`. The\n`session_key` is used to decrypt encrypted user data delivered by other\nMini Program APIs.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User Information",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "auth.getPaidUnionId",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.weixin.qq.com/wxa/getpaidunionid",
+            "params": [
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "Application access token from `auth.getAccessToken`."
+              },
+              {
+                "name": "openid",
+                "value": "",
+                "type": "query",
+                "description": "The user's openid in the Mini Program."
+              },
+              {
+                "name": "transaction_id",
+                "value": "",
+                "type": "query",
+                "description": "WeChat Pay transaction id (optional if `mch_id` + `out_trade_no` are supplied)."
+              },
+              {
+                "name": "mch_id",
+                "value": "",
+                "type": "query",
+                "description": "WeChat Pay merchant id (used with `out_trade_no`)."
+              },
+              {
+                "name": "out_trade_no",
+                "value": "",
+                "type": "query",
+                "description": "Merchant-side order number (used with `mch_id`)."
+              }
+            ]
+          },
+          "docs": "Retrieve a user's UnionID after they have completed a WeChat Pay\ntransaction in the Mini Program. Requires either `openid` plus\n`transaction_id`, or `openid` plus `mch_id` and `out_trade_no`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
