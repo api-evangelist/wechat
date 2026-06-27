@@ -64,7 +64,7 @@ apis:
   - url: https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html
     type: IDESupport
   - url: https://github.com/wechat-miniprogram/api-typings
-    type: SDK
+    type: SDKs
 - aid: wechat:wechat-pay-apiv3-direct-merchant
   name: WeChat Pay APIv3 (Direct-Connect Merchant)
   description: WeChat Pay's third-generation REST API for mainland-China direct-connect merchants. Authenticates with merchant API certificates and platform-key signed requests over HTTPS/JSON. Covers JSAPI / Native / App / H5 / Mini Program payments, refunds, bill download, merchant transfers, WeChat Pay Score, vouchers, marketing red packets, profit sharing, consumer complaints, and platform certificate rotation. Replaces the legacy XML-based APIv2.
@@ -87,11 +87,11 @@ apis:
   - url: https://pay.weixin.qq.com/
     type: Portal
   - url: https://github.com/wechatpay-apiv3/wechatpay-java
-    type: SDK
+    type: SDKs
   - url: https://github.com/wechatpay-apiv3/wechatpay-go
-    type: SDK
+    type: SDKs
   - url: https://github.com/wechatpay-apiv3/wechatpay-php
-    type: SDK
+    type: SDKs
   - url: https://github.com/wechatpay-apiv3/wechatpay-postman-script
     type: CodeExamples
   - url: https://github.com/wechatpay-apiv3/CertificateDownloader
@@ -220,7 +220,7 @@ apis:
   - url: https://work.weixin.qq.com/wework_admin/loginpage_wx
     type: Login
   - url: https://github.com/sbzhu/weworkapi_python
-    type: SDK
+    type: SDKs
   - url: asyncapi/wechat-webhooks-asyncapi.yml
     type: AsyncAPI
 - aid: wechat:wechat-cloud-hosting-api
@@ -312,23 +312,23 @@ common:
 - url: https://github.com/wechat-miniprogram/miniprogram-demo
   type: CodeExamples
 - url: https://github.com/wechat-miniprogram/weui-miniprogram
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechat-miniprogram/api-typings
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechat-miniprogram/threejs-miniprogram
-  type: SDK
+  type: SDKs
 - url: https://github.com/Tencent/weui
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechatpay-apiv3/wechatpay-java
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechatpay-apiv3/wechatpay-go
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechatpay-apiv3/wechatpay-php
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechatpay-apiv3/wechatpay-apache-httpclient
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechatpay-apiv3/wechatpay-guzzle-middleware
-  type: SDK
+  type: SDKs
 - url: https://github.com/wechatpay-apiv3/wechatpay-postman-script
   type: CodeExamples
 - url: https://github.com/wechatpay-apiv3/CertificateDownloader
