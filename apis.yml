@@ -271,6 +271,8 @@ apis:
   - url: https://shop.weixin.qq.com/
     type: Portal
 common:
+- type: AgenticAccess
+  url: agentic-access/wechat-agentic-access.yml
 - type: DomainSecurity
   url: security/wechat-domain-security.yml
 - url: https://www.wechat.com/
