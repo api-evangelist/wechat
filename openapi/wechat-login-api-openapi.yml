@@ -1,0 +1,116 @@
+openapi: 3.1.0
+info:
+  title: WeChat Mini Program Server API (subset) Access Token Login API
+  description: 'Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side
+
+    API hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed
+
+    to bootstrap a Mini Program backend: exchanging a temporary login code for
+
+    a session via `auth.code2Session`, minting an application access token via
+
+    `auth.getAccessToken`, and retrieving a paid-only UnionID via
+
+    `auth.getPaidUnionId`.
+
+
+    Authentication for these foundational endpoints is keyed on the Mini
+
+    Program''s AppID and AppSecret, passed as query parameters. Subsequent
+
+    business APIs (template messages, content moderation, analytics, QR codes,
+
+    logistics, etc.) require the `access_token` obtained from
+
+    `auth.getAccessToken`.
+
+    '
+  version: 1.0.0
+  contact:
+    name: WeChat Developer Community
+    url: https://developers.weixin.qq.com/community/
+  license:
+    name: Proprietary
+servers:
+- url: https://api.weixin.qq.com
+  description: WeChat production API
+tags:
+- name: Login
+  description: Mini Program login and session exchange.
+paths:
+  /sns/jscode2session:
+    get:
+      tags:
+      - Login
+      summary: auth.code2Session
+      description: 'Exchange a temporary login `code` returned by `wx.login()` in the Mini
+
+        Program client for a stable `openid` and `session_key`. The
+
+        `session_key` is used to decrypt encrypted user data delivered by other
+
+        Mini Program APIs.
+
+        '
+      operationId: code2Session
+      parameters:
+      - in: query
+        name: appid
+        required: true
+        schema:
+          type: string
+        description: Mini Program AppID.
+      - in: query
+        name: secret
+        required: true
+        schema:
+          type: string
+        description: Mini Program AppSecret.
+      - in: query
+        name: js_code
+        required: true
+        schema:
+          type: string
+        description: Temporary login credential `code` from `wx.login()`.
+      - in: query
+        name: grant_type
+        required: true
+        schema:
+          type: string
+          enum:
+          - authorization_code
+        description: Must be `authorization_code`.
+      responses:
+        '200':
+          description: Session exchange result.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    openid:
+                      type: string
+                      description: Mini Program-scoped user identifier.
+                    session_key:
+                      type: string
+                      description: Session key used to decrypt encrypted payloads.
+                    unionid:
+                      type: string
+                      description: WeChat Open Platform-wide UnionID (when applicable).
+                - $ref: '#/components/schemas/WeChatError'
+components:
+  schemas:
+    WeChatError:
+      type: object
+      description: Standard WeChat API error envelope.
+      properties:
+        errcode:
+          type: integer
+          description: Numeric WeChat error code; `0` indicates success.
+        errmsg:
+          type: string
+          description: Human-readable error message.
+externalDocs:
+  description: WeChat Mini Program Server API
+  url: https://developers.weixin.qq.com/miniprogram/en/dev/api-backend/

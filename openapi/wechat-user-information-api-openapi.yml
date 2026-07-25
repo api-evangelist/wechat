@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: WeChat Mini Program Server API (subset) Access Token User Information API
+  description: 'Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side
+
+    API hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed
+
+    to bootstrap a Mini Program backend: exchanging a temporary login code for
+
+    a session via `auth.code2Session`, minting an application access token via
+
+    `auth.getAccessToken`, and retrieving a paid-only UnionID via
+
+    `auth.getPaidUnionId`.
+
+
+    Authentication for these foundational endpoints is keyed on the Mini
+
+    Program''s AppID and AppSecret, passed as query parameters. Subsequent
+
+    business APIs (template messages, content moderation, analytics, QR codes,
+
+    logistics, etc.) require the `access_token` obtained from
+
+    `auth.getAccessToken`.
+
+    '
+  version: 1.0.0
+  contact:
+    name: WeChat Developer Community
+    url: https://developers.weixin.qq.com/community/
+  license:
+    name: Proprietary
+servers:
+- url: https://api.weixin.qq.com
+  description: WeChat production API
+tags:
+- name: User Information
+  description: User identity (UnionID) lookups.
+paths:
+  /wxa/getpaidunionid:
+    get:
+      tags:
+      - User Information
+      summary: auth.getPaidUnionId
+      description: 'Retrieve a user''s UnionID after they have completed a WeChat Pay
+
+        transaction in the Mini Program. Requires either `openid` plus
+
+        `transaction_id`, or `openid` plus `mch_id` and `out_trade_no`.
+
+        '
+      operationId: getPaidUnionId
+      parameters:
+      - in: query
+        name: access_token
+        required: true
+        schema:
+          type: string
+        description: Application access token from `auth.getAccessToken`.
+      - in: query
+        name: openid
+        required: true
+        schema:
+          type: string
+        description: The user's openid in the Mini Program.
+      - in: query
+        name: transaction_id
+        schema:
+          type: string
+        description: WeChat Pay transaction id (optional if `mch_id` + `out_trade_no` are supplied).
+      - in: query
+        name: mch_id
+        schema:
+          type: string
+        description: WeChat Pay merchant id (used with `out_trade_no`).
+      - in: query
+        name: out_trade_no
+        schema:
+          type: string
+        description: Merchant-side order number (used with `mch_id`).
+      responses:
+        '200':
+          description: Paid UnionID result.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    unionid:
+                      type: string
+                      description: Cross-application UnionID for the paying user.
+                    errcode:
+                      type: integer
+                    errmsg:
+                      type: string
+                - $ref: '#/components/schemas/WeChatError'
+components:
+  schemas:
+    WeChatError:
+      type: object
+      description: Standard WeChat API error envelope.
+      properties:
+        errcode:
+          type: integer
+          description: Numeric WeChat error code; `0` indicates success.
+        errmsg:
+          type: string
+          description: Human-readable error message.
+externalDocs:
+  description: WeChat Mini Program Server API
+  url: https://developers.weixin.qq.com/miniprogram/en/dev/api-backend/
