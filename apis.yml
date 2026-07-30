@@ -2,6 +2,17 @@ aid: wechat
 name: WeChat
 url: https://raw.githubusercontent.com/api-evangelist/wechat/refs/heads/main/apis.yml
 description: WeChat (Weixin) is Tencent's flagship super-app, combining messaging, social, payments, mini-apps, official-account publishing, video, enterprise collaboration, and cloud hosting under a single identity. Its developer surface spans the WeChat Open Platform (third-party app login and authorization), Mini Programs (client and server APIs), Mini Games, Official Accounts and Service Accounts, WeChat Pay (APIv3 for mainland China and Global v3 for cross-border merchants), WeChat Work / WeCom (Enterprise WeChat), WeChat Channels (Video Accounts), WeChat Shop, and WeChat Cloud Hosting — addressing over a billion monthly active users primarily in China and across the WeChat international footprint.
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
 image: https://res.wx.qq.com/op_res/9rSix1dhHfK4rW029eFr-aJZkUVtQrKZbZHsFRpeFx_aJ-mQIzZ8DvJZsI7AtZk9
 tags:
 - Messaging
@@ -26,7 +37,13 @@ modified: '2026-05-29'
 apis:
 - aid: wechat:wechat-mini-programs-server-api
   name: WeChat Mini Programs Server API
-  description: Backend HTTPS/JSON APIs that Mini Program operators call from their own servers to authenticate user sessions (code2Session), mint access tokens, send customer service and template/subscription messages, generate Mini Program codes / QR codes, run content moderation (msgSecCheck, imgSecCheck, mediaCheckAsync), pull analytics (retention, visit trends, user portraits, page distribution), manage logistics, manage plugins, and verify SOTER biometric signatures. This is the server-side counterpart to the Mini Program JS framework and the primary integration surface for Mini Program publishers.
+  description: >-
+    Backend HTTPS/JSON APIs that Mini Program operators call from their own servers to authenticate user
+    sessions (code2Session), mint access tokens, send customer service and template/subscription messages,
+    generate Mini Program codes / QR codes, run content moderation (msgSecCheck, imgSecCheck, mediaCheckAsync),
+    pull analytics (retention, visit trends, user portraits, page distribution), manage logistics, manage
+    plugins, and verify SOTER biometric signatures. This is the server-side counterpart to the Mini Program
+    JS framework and the primary integration surface for Mini Program publishers.
   humanURL: https://developers.weixin.qq.com/miniprogram/en/dev/api-backend/
   baseURL: https://api.weixin.qq.com
   tags:
@@ -44,11 +61,17 @@ apis:
     type: Documentation
   - url: https://developers.weixin.qq.com/miniprogram/en/dev/framework/quickstart/
     type: GettingStarted
-  - url: https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html
+  - url: >-
+      https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html
     type: Authentication
 - aid: wechat:wechat-mini-programs-client-api
   name: WeChat Mini Programs Client API
-  description: Client-side JavaScript API exposed inside the WeChat runtime to Mini Programs and Mini Games. Covers network (wx.request, wx.downloadFile, wx.uploadFile), storage, UI / navigation, media (audio, video, camera, image), location, device (Bluetooth, NFC, Wi-Fi, sensors), file system, canvas, payment invocation (wx.requestPayment), login (wx.login), and the WeChat-provided UI components. Apps are built with WXML / WXSS / JS and packaged via the WeChat Developer Tools.
+  description: >-
+    Client-side JavaScript API exposed inside the WeChat runtime to Mini Programs and Mini Games. Covers
+    network (wx.request, wx.downloadFile, wx.uploadFile), storage, UI / navigation, media (audio, video,
+    camera, image), location, device (Bluetooth, NFC, Wi-Fi, sensors), file system, canvas, payment invocation
+    (wx.requestPayment), login (wx.login), and the WeChat-provided UI components. Apps are built with
+    WXML / WXSS / JS and packaged via the WeChat Developer Tools.
   humanURL: https://developers.weixin.qq.com/miniprogram/en/dev/api/
   tags:
   - Mini Programs
@@ -67,7 +90,12 @@ apis:
     type: SDKs
 - aid: wechat:wechat-pay-apiv3-direct-merchant
   name: WeChat Pay APIv3 (Direct-Connect Merchant)
-  description: WeChat Pay's third-generation REST API for mainland-China direct-connect merchants. Authenticates with merchant API certificates and platform-key signed requests over HTTPS/JSON. Covers JSAPI / Native / App / H5 / Mini Program payments, refunds, bill download, merchant transfers, WeChat Pay Score, vouchers, marketing red packets, profit sharing, consumer complaints, and platform certificate rotation. Replaces the legacy XML-based APIv2.
+  description: >-
+    WeChat Pay's third-generation REST API for mainland-China direct-connect merchants. Authenticates
+    with merchant API certificates and platform-key signed requests over HTTPS/JSON. Covers JSAPI / Native
+    / App / H5 / Mini Program payments, refunds, bill download, merchant transfers, WeChat Pay Score,
+    vouchers, marketing red packets, profit sharing, consumer complaints, and platform certificate rotation.
+    Replaces the legacy XML-based APIv2.
   humanURL: https://pay.weixin.qq.com/wiki/doc/apiv3/en/index.shtml
   baseURL: https://api.mch.weixin.qq.com
   tags:
@@ -100,7 +128,11 @@ apis:
     type: AsyncAPI
 - aid: wechat:wechat-pay-apiv3-service-provider
   name: WeChat Pay APIv3 (Service Provider / Partner)
-  description: WeChat Pay's APIv3 in "service provider" mode, used by payment platforms and ISVs to onboard and operate sub-merchants. Adds combined-order JSAPI/Native/App payments, sub-merchant onboarding ("特约商户进件"), sub-merchant settlement and bill journals, partner-mode refunds, profit sharing across sub-merchants, marketing tooling, and consumer complaint handling on behalf of sub-merchants.
+  description: >-
+    WeChat Pay's APIv3 in "service provider" mode, used by payment platforms and ISVs to onboard and operate
+    sub-merchants. Adds combined-order JSAPI/Native/App payments, sub-merchant onboarding ("特约商户进件"),
+    sub-merchant settlement and bill journals, partner-mode refunds, profit sharing across sub-merchants,
+    marketing tooling, and consumer complaint handling on behalf of sub-merchants.
   humanURL: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/en/index.shtml
   baseURL: https://api.mch.weixin.qq.com
   tags:
@@ -117,7 +149,10 @@ apis:
     type: Documentation
 - aid: wechat:wechat-pay-global-v3
   name: WeChat Pay Global v3 API
-  description: Cross-border WeChat Pay surface for international institutions and merchants accepting payments from WeChat users outside mainland China. Provides a "universal version for global institutions and merchants" with multi-currency settlement, refunds, and reconciliation distinct from the mainland APIv3.
+  description: >-
+    Cross-border WeChat Pay surface for international institutions and merchants accepting payments from
+    WeChat users outside mainland China. Provides a "universal version for global institutions and merchants"
+    with multi-currency settlement, refunds, and reconciliation distinct from the mainland APIv3.
   humanURL: https://pay.weixin.qq.com/doc/global/v3/en/index.html
   tags:
   - Payments
@@ -132,8 +167,14 @@ apis:
     type: Portal
 - aid: wechat:wechat-open-platform-mobile-login
   name: WeChat Open Platform — Mobile App Login (OAuth 2.0)
-  description: OAuth 2.0 authorization flow exposed by the WeChat Open Platform for native iOS, Android, and HarmonyOS apps. Apps redirect into WeChat to obtain an authorization code, then exchange it via `https://api.weixin.qq.com/sns/oauth2/access_token` for an access token (snsapi_userinfo scope), refresh tokens via `/sns/oauth2/refresh_token`, and fetch profile via `/sns/userinfo`. Access tokens expire in 7200 seconds; refresh tokens last 180 days. Underpins "Login with WeChat" across third-party mobile apps.
-  humanURL: https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Development_Guide.html
+  description: >-
+    OAuth 2.0 authorization flow exposed by the WeChat Open Platform for native iOS, Android, and HarmonyOS
+    apps. Apps redirect into WeChat to obtain an authorization code, then exchange it via `https://api.weixin.qq.com/sns/oauth2/access_token`
+    for an access token (snsapi_userinfo scope), refresh tokens via `/sns/oauth2/refresh_token`, and fetch
+    profile via `/sns/userinfo`. Access tokens expire in 7200 seconds; refresh tokens last 180 days. Underpins
+    "Login with WeChat" across third-party mobile apps.
+  humanURL: >-
+    https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Development_Guide.html
   baseURL: https://api.weixin.qq.com
   tags:
   - Identity
@@ -142,16 +183,23 @@ apis:
   - Mobile
   - Open Platform
   properties:
-  - url: https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Development_Guide.html
+  - url: >-
+      https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Development_Guide.html
     type: Documentation
   - url: https://open.weixin.qq.com/
     type: Portal
-  - url: https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Authorized_Interface_Calling_UnionID.html
+  - url: >-
+      https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Authorized_Interface_Calling_UnionID.html
     type: APIReference
 - aid: wechat:wechat-open-platform-website-login
   name: WeChat Open Platform — Website Login (QR OAuth)
-  description: Web-based OAuth 2.0 login that renders a WeChat QR code on third-party websites. End users scan the code in WeChat to authenticate; the website receives a code on its callback URL and exchanges it for a snsapi_login access token plus the user's WeChat OpenID / UnionID. Standard way of adding "Sign in with WeChat" to non-WeChat web properties.
-  humanURL: https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html
+  description: >-
+    Web-based OAuth 2.0 login that renders a WeChat QR code on third-party websites. End users scan the
+    code in WeChat to authenticate; the website receives a code on its callback URL and exchanges it for
+    a snsapi_login access token plus the user's WeChat OpenID / UnionID. Standard way of adding "Sign
+    in with WeChat" to non-WeChat web properties.
+  humanURL: >-
+    https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html
   tags:
   - Identity
   - OAuth
@@ -159,14 +207,21 @@ apis:
   - Web
   - QR Code
   properties:
-  - url: https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html
+  - url: >-
+      https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html
     type: Documentation
   - url: https://open.weixin.qq.com/
     type: Portal
 - aid: wechat:wechat-open-platform-third-party
   name: WeChat Open Platform — Third-Party Platform API
-  description: API surface that lets authorized ISVs operate Official Accounts and Mini Programs on behalf of merchant clients ("代商家调用接口"). Covers merchant authorization onboarding, developing Mini Programs on behalf of merchants (registration, certification, code template upload, version management), initiating web authorization, handling messages and events, using the JS-SDK on behalf of accounts, cloud development integration, domain configuration, privacy settings, and merchant-violation notifications.
-  humanURL: https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/Authorization_Process_Technical_Description.html
+  description: >-
+    API surface that lets authorized ISVs operate Official Accounts and Mini Programs on behalf of merchant
+    clients ("代商家调用接口"). Covers merchant authorization onboarding, developing Mini Programs on behalf
+    of merchants (registration, certification, code template upload, version management), initiating web
+    authorization, handling messages and events, using the JS-SDK on behalf of accounts, cloud development
+    integration, domain configuration, privacy settings, and merchant-violation notifications.
+  humanURL: >-
+    https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/Authorization_Process_Technical_Description.html
   tags:
   - Open Platform
   - Third-Party Platform
@@ -175,13 +230,19 @@ apis:
   - Mini Programs
   - Official Accounts
   properties:
-  - url: https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/Authorization_Process_Technical_Description.html
+  - url: >-
+      https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/Authorization_Process_Technical_Description.html
     type: Documentation
   - url: https://open.weixin.qq.com/cgi-bin/frame?t=home/wx_plugin&lang=zh_CN
     type: Portal
 - aid: wechat:wechat-official-accounts-api
   name: WeChat Official Accounts API
-  description: HTTPS/JSON APIs for WeChat Official Accounts (Subscription Accounts and Service Accounts) — the publishing surface used by media, brands, and businesses to reach WeChat followers. Surface includes user-info & tagging, message receipt and reply (text, image, voice, video, news), template messages, customer service messages, custom menus, materials and asset management, QR code with scene parameters, web authorization (snsapi_base / snsapi_userinfo), and the JS-SDK for embedded webpages.
+  description: >-
+    HTTPS/JSON APIs for WeChat Official Accounts (Subscription Accounts and Service Accounts) — the publishing
+    surface used by media, brands, and businesses to reach WeChat followers. Surface includes user-info
+    & tagging, message receipt and reply (text, image, voice, video, news), template messages, customer
+    service messages, custom menus, materials and asset management, QR code with scene parameters, web
+    authorization (snsapi_base / snsapi_userinfo), and the JS-SDK for embedded webpages.
   humanURL: https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html
   baseURL: https://api.weixin.qq.com
   tags:
@@ -200,7 +261,15 @@ apis:
     type: AsyncAPI
 - aid: wechat:wechat-work-api
   name: WeChat Work (WeCom) API
-  description: Server API for Enterprise WeChat / WeCom — Tencent's enterprise collaboration suite. All calls are HTTPS/JSON, UTF-8 encoded, and require an access token. Covers Contacts management (members, departments, tags), messaging & event callbacks, group chat sessions and passive reply, External Contacts (customer management, departing-employee inheritance, customer groups, moments), web OAuth / Web login components / secondary verification, Office Automation (mail, document collaboration, calendar, meetings, cloud drive, livestreaming), enterprise payments (red envelopes, employee payment, external collections / invoicing), conversation-content archive for compliance, school/parent communication, civic / grid services, and the AI & data zone for analytics and knowledge bases.
+  description: >-
+    Server API for Enterprise WeChat / WeCom — Tencent's enterprise collaboration suite. All calls are
+    HTTPS/JSON, UTF-8 encoded, and require an access token. Covers Contacts management (members, departments,
+    tags), messaging & event callbacks, group chat sessions and passive reply, External Contacts (customer
+    management, departing-employee inheritance, customer groups, moments), web OAuth / Web login components
+    / secondary verification, Office Automation (mail, document collaboration, calendar, meetings, cloud
+    drive, livestreaming), enterprise payments (red envelopes, employee payment, external collections
+    / invoicing), conversation-content archive for compliance, school/parent communication, civic / grid
+    services, and the AI & data zone for analytics and knowledge bases.
   humanURL: https://developer.work.weixin.qq.com/document/path/90664
   baseURL: https://qyapi.weixin.qq.com
   tags:
@@ -225,7 +294,15 @@ apis:
     type: AsyncAPI
 - aid: wechat:wechat-cloud-hosting-api
   name: WeChat Cloud Hosting API
-  description: WeChat Cloud Hosting (微信云托管) is Tencent's cloud-native, ops-free container deployment service tightly integrated into the WeChat ecosystem. Documented as "a cloud-native, operations-free, highly available service deployment solution that requires no servers and enables deployment in just one minute." Exposes container deployment APIs, serverless MySQL, object storage with CDN and security validation, native token access (no auth layer needed to call WeChat APIs), the cloud-call service relaying WeChat APIs, message-push routing, WeChat Pay integration without encryption handling, gray deployment and version rollback, real-time log search, resource monitoring, custom alerts, and Enterprise WeChat robot notifications. Supports Node.js, Go, Python, and Java containers plus official templates.
+  description: >-
+    WeChat Cloud Hosting (微信云托管) is Tencent's cloud-native, ops-free container deployment service tightly
+    integrated into the WeChat ecosystem. Documented as "a cloud-native, operations-free, highly available
+    service deployment solution that requires no servers and enables deployment in just one minute." Exposes
+    container deployment APIs, serverless MySQL, object storage with CDN and security validation, native
+    token access (no auth layer needed to call WeChat APIs), the cloud-call service relaying WeChat APIs,
+    message-push routing, WeChat Pay integration without encryption handling, gray deployment and version
+    rollback, real-time log search, resource monitoring, custom alerts, and Enterprise WeChat robot notifications.
+    Supports Node.js, Go, Python, and Java containers plus official templates.
   humanURL: https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/src/basic/intro.html
   tags:
   - Cloud Hosting
@@ -242,7 +319,11 @@ apis:
     type: Portal
 - aid: wechat:wechat-channels-api
   name: WeChat Channels (Video Accounts) Developer Surface
-  description: WeChat Channels (视频号) is WeChat's short-video and livestreaming product. The developer surface — exposed through the Mini Programs platform and Channels merchant tools — covers livestream room creation, livestream goods linkage, Channels-driven traffic into Mini Programs, and merchant integrations. There is no fully public OpenAPI; most APIs are gated to qualified Channels merchants and partners.
+  description: >-
+    WeChat Channels (视频号) is WeChat's short-video and livestreaming product. The developer surface — exposed
+    through the Mini Programs platform and Channels merchant tools — covers livestream room creation,
+    livestream goods linkage, Channels-driven traffic into Mini Programs, and merchant integrations. There
+    is no fully public OpenAPI; most APIs are gated to qualified Channels merchants and partners.
   humanURL: https://channels.weixin.qq.com/developers
   tags:
   - Video Accounts
@@ -257,8 +338,13 @@ apis:
     type: Portal
 - aid: wechat:wechat-shop-api
   name: WeChat Shop (微信小店) API
-  description: WeChat Shop (微信小店) is WeChat's unified merchant storefront tying together Mini Programs, Channels livestreaming, Official Accounts, and WeChat Search. APIs cover product (SPU/SKU) management, order lifecycle, after-sales, logistics, inventory, vouchers, and merchant-side fulfilment hooks for the integrated WeChat commerce graph.
-  humanURL: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/mini-shop/
+  description: >-
+    WeChat Shop (微信小店) is WeChat's unified merchant storefront tying together Mini Programs, Channels
+    livestreaming, Official Accounts, and WeChat Search. APIs cover product (SPU/SKU) management, order
+    lifecycle, after-sales, logistics, inventory, vouchers, and merchant-side fulfilment hooks for the
+    integrated WeChat commerce graph.
+  humanURL: >-
+    https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/mini-shop/
   tags:
   - Commerce
   - Shop
@@ -266,10 +352,41 @@ apis:
   - Orders
   - Logistics
   properties:
-  - url: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/mini-shop/
+  - url: >-
+      https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/mini-shop/
     type: Documentation
   - url: https://shop.weixin.qq.com/
     type: Portal
+- aid: wechat:wechat-access-token-api
+  name: WeChat Access Token API
+  description: Application-level access token management.
+  humanURL: https://developers.weixin.qq.com/miniprogram/en/dev/api-backend/
+  baseURL: https://api.weixin.qq.com
+  tags:
+  - Access Token
+  properties:
+  - type: OpenAPI
+    url: openapi/wechat-access-token-api-openapi.yml
+- aid: wechat:wechat-login-api
+  name: WeChat Login API
+  description: Mini Program login and session exchange.
+  humanURL: https://developers.weixin.qq.com/miniprogram/en/dev/api-backend/
+  baseURL: https://api.weixin.qq.com
+  tags:
+  - Login
+  properties:
+  - type: OpenAPI
+    url: openapi/wechat-login-api-openapi.yml
+- aid: wechat:wechat-user-information-api
+  name: WeChat User Information API
+  description: User identity (UnionID) lookups.
+  humanURL: https://developers.weixin.qq.com/miniprogram/en/dev/api-backend/
+  baseURL: https://api.weixin.qq.com
+  tags:
+  - User Information
+  properties:
+  - type: OpenAPI
+    url: openapi/wechat-user-information-api-openapi.yml
 common:
 - type: AgenticAccess
   url: agentic-access/wechat-agentic-access.yml
