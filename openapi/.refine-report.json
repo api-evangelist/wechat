@@ -1,0 +1,18 @@
+{
+  "provider": "wechat",
+  "sources": [
+    "wechat-access-token-api-openapi.yml",
+    "wechat-login-api-openapi.yml",
+    "wechat-user-information-api-openapi.yml"
+  ],
+  "outputs": [
+    "wechat-access-token-api-openapi.yml",
+    "wechat-login-api-openapi.yml",
+    "wechat-user-information-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

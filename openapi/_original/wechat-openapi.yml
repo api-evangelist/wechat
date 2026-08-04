@@ -1,0 +1,213 @@
+openapi: 3.1.0
+info:
+  title: WeChat Mini Program Server API (subset)
+  description: |
+    Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side
+    API hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed
+    to bootstrap a Mini Program backend: exchanging a temporary login code for
+    a session via `auth.code2Session`, minting an application access token via
+    `auth.getAccessToken`, and retrieving a paid-only UnionID via
+    `auth.getPaidUnionId`.
+
+    Authentication for these foundational endpoints is keyed on the Mini
+    Program's AppID and AppSecret, passed as query parameters. Subsequent
+    business APIs (template messages, content moderation, analytics, QR codes,
+    logistics, etc.) require the `access_token` obtained from
+    `auth.getAccessToken`.
+  version: "1.0.0"
+  contact:
+    name: WeChat Developer Community
+    url: https://developers.weixin.qq.com/community/
+  license:
+    name: Proprietary
+servers:
+  - url: https://api.weixin.qq.com
+    description: WeChat production API
+tags:
+  - name: Login
+    description: Mini Program login and session exchange.
+  - name: Access Token
+    description: Application-level access token management.
+  - name: User Information
+    description: User identity (UnionID) lookups.
+paths:
+  /cgi-bin/token:
+    get:
+      tags: [Access Token]
+      summary: auth.getAccessToken
+      description: |
+        Obtain the global application `access_token` for a Mini Program.
+        Returned tokens are valid for 7200 seconds and must be cached and
+        re-used across the application; concurrent calls will overwrite each
+        other.
+      operationId: getAccessToken
+      parameters:
+        - in: query
+          name: grant_type
+          required: true
+          schema:
+            type: string
+            enum: [client_credential]
+          description: Must be set to `client_credential`.
+        - in: query
+          name: appid
+          required: true
+          schema:
+            type: string
+          description: Mini Program AppID from the WeChat Official Accounts Platform.
+        - in: query
+          name: secret
+          required: true
+          schema:
+            type: string
+          description: Mini Program AppSecret.
+      responses:
+        "200":
+          description: Access token response.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      access_token:
+                        type: string
+                        description: Global application access token.
+                      expires_in:
+                        type: integer
+                        format: int32
+                        description: Lifetime of the access token in seconds (typically 7200).
+                  - $ref: "#/components/schemas/WeChatError"
+              examples:
+                success:
+                  value:
+                    access_token: "ACCESS_TOKEN"
+                    expires_in: 7200
+                invalidAppId:
+                  value:
+                    errcode: 40013
+                    errmsg: "invalid appid"
+  /sns/jscode2session:
+    get:
+      tags: [Login]
+      summary: auth.code2Session
+      description: |
+        Exchange a temporary login `code` returned by `wx.login()` in the Mini
+        Program client for a stable `openid` and `session_key`. The
+        `session_key` is used to decrypt encrypted user data delivered by other
+        Mini Program APIs.
+      operationId: code2Session
+      parameters:
+        - in: query
+          name: appid
+          required: true
+          schema:
+            type: string
+          description: Mini Program AppID.
+        - in: query
+          name: secret
+          required: true
+          schema:
+            type: string
+          description: Mini Program AppSecret.
+        - in: query
+          name: js_code
+          required: true
+          schema:
+            type: string
+          description: Temporary login credential `code` from `wx.login()`.
+        - in: query
+          name: grant_type
+          required: true
+          schema:
+            type: string
+            enum: [authorization_code]
+          description: Must be `authorization_code`.
+      responses:
+        "200":
+          description: Session exchange result.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      openid:
+                        type: string
+                        description: Mini Program-scoped user identifier.
+                      session_key:
+                        type: string
+                        description: Session key used to decrypt encrypted payloads.
+                      unionid:
+                        type: string
+                        description: WeChat Open Platform-wide UnionID (when applicable).
+                  - $ref: "#/components/schemas/WeChatError"
+  /wxa/getpaidunionid:
+    get:
+      tags: [User Information]
+      summary: auth.getPaidUnionId
+      description: |
+        Retrieve a user's UnionID after they have completed a WeChat Pay
+        transaction in the Mini Program. Requires either `openid` plus
+        `transaction_id`, or `openid` plus `mch_id` and `out_trade_no`.
+      operationId: getPaidUnionId
+      parameters:
+        - in: query
+          name: access_token
+          required: true
+          schema:
+            type: string
+          description: Application access token from `auth.getAccessToken`.
+        - in: query
+          name: openid
+          required: true
+          schema:
+            type: string
+          description: The user's openid in the Mini Program.
+        - in: query
+          name: transaction_id
+          schema:
+            type: string
+          description: WeChat Pay transaction id (optional if `mch_id` + `out_trade_no` are supplied).
+        - in: query
+          name: mch_id
+          schema:
+            type: string
+          description: WeChat Pay merchant id (used with `out_trade_no`).
+        - in: query
+          name: out_trade_no
+          schema:
+            type: string
+          description: Merchant-side order number (used with `mch_id`).
+      responses:
+        "200":
+          description: Paid UnionID result.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      unionid:
+                        type: string
+                        description: Cross-application UnionID for the paying user.
+                      errcode:
+                        type: integer
+                      errmsg:
+                        type: string
+                  - $ref: "#/components/schemas/WeChatError"
+components:
+  schemas:
+    WeChatError:
+      type: object
+      description: Standard WeChat API error envelope.
+      properties:
+        errcode:
+          type: integer
+          description: Numeric WeChat error code; `0` indicates success.
+        errmsg:
+          type: string
+          description: Human-readable error message.
+externalDocs:
+  description: WeChat Mini Program Server API
+  url: https://developers.weixin.qq.com/miniprogram/en/dev/api-backend/
