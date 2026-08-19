@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WeChat Mini Program Server API (subset) Access Token Login API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Login",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "auth.code2Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.weixin.qq.com/sns/jscode2session",
+            "params": [
+              {
+                "name": "appid",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppID."
+              },
+              {
+                "name": "secret",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppSecret."
+              },
+              {
+                "name": "js_code",
+                "value": "",
+                "type": "query",
+                "description": "Temporary login credential `code` from `wx.login()`."
+              },
+              {
+                "name": "grant_type",
+                "value": "",
+                "type": "query",
+                "description": "Must be `authorization_code`."
+              }
+            ]
+          },
+          "docs": "Exchange a temporary login `code` returned by `wx.login()` in the Mini\nProgram client for a stable `openid` and `session_key`. The\n`session_key` is used to decrypt encrypted user data delivered by other\nMini Program APIs.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

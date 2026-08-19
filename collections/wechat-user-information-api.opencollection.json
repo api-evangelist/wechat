@@ -1,0 +1,61 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WeChat Mini Program Server API (subset) Access Token User Information API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User Information",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "auth.getPaidUnionId",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.weixin.qq.com/wxa/getpaidunionid",
+            "params": [
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "Application access token from `auth.getAccessToken`."
+              },
+              {
+                "name": "openid",
+                "value": "",
+                "type": "query",
+                "description": "The user's openid in the Mini Program."
+              },
+              {
+                "name": "transaction_id",
+                "value": "",
+                "type": "query",
+                "description": "WeChat Pay transaction id (optional if `mch_id` + `out_trade_no` are supplied)."
+              },
+              {
+                "name": "mch_id",
+                "value": "",
+                "type": "query",
+                "description": "WeChat Pay merchant id (used with `out_trade_no`)."
+              },
+              {
+                "name": "out_trade_no",
+                "value": "",
+                "type": "query",
+                "description": "Merchant-side order number (used with `mch_id`)."
+              }
+            ]
+          },
+          "docs": "Retrieve a user's UnionID after they have completed a WeChat Pay\ntransaction in the Mini Program. Requires either `openid` plus\n`transaction_id`, or `openid` plus `mch_id` and `out_trade_no`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

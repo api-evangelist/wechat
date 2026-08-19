@@ -1,0 +1,156 @@
+{
+  "item": [
+    {
+      "id": "09ad7f29-a8a3-474b-9235-0e6b50f78436",
+      "name": "User Information",
+      "description": {
+        "content": "User identity (UnionID) lookups.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "057739c9-4990-4a19-9715-1eb87564361d",
+          "name": "auth.getPaidUnionId",
+          "request": {
+            "name": "auth.getPaidUnionId",
+            "description": {
+              "content": "Retrieve a user's UnionID after they have completed a WeChat Pay\ntransaction in the Mini Program. Requires either `openid` plus\n`transaction_id`, or `openid` plus `mch_id` and `out_trade_no`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wxa",
+                "getpaidunionid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access_token",
+                  "value": "<string>",
+                  "description": "(Required) Application access token from `auth.getAccessToken`."
+                },
+                {
+                  "disabled": false,
+                  "key": "openid",
+                  "value": "<string>",
+                  "description": "(Required) The user's openid in the Mini Program."
+                },
+                {
+                  "disabled": false,
+                  "key": "transaction_id",
+                  "value": "<string>",
+                  "description": "WeChat Pay transaction id (optional if `mch_id` + `out_trade_no` are supplied)."
+                },
+                {
+                  "disabled": false,
+                  "key": "mch_id",
+                  "value": "<string>",
+                  "description": "WeChat Pay merchant id (used with `out_trade_no`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "out_trade_no",
+                  "value": "<string>",
+                  "description": "Merchant-side order number (used with `mch_id`)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c75193d6-402e-4593-ba22-01a2ad158870",
+              "name": "Paid UnionID result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wxa",
+                    "getpaidunionid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "openid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "transaction_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mch_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "out_trade_no",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"unionid\": \"string\",\n  \"errcode\": 4101,\n  \"errmsg\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.weixin.qq.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8819c94a-41bb-40ff-9911-ccaaf48962e4",
+    "name": "WeChat Mini Program Server API (subset) Access Token User Information API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side\nAPI hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed\nto bootstrap a Mini Program backend: exchanging a temporary login code for\na session via `auth.code2Session`, minting an application access token via\n`auth.getAccessToken`, and retrieving a paid-only UnionID via\n`auth.getPaidUnionId`.\n\nAuthentication for these foundational endpoints is keyed on the Mini\nProgram's AppID and AppSecret, passed as query parameters. Subsequent\nbusiness APIs (template messages, content moderation, analytics, QR codes,\nlogistics, etc.) require the `access_token` obtained from\n`auth.getAccessToken`.\n\n\nContact Support:\n Name: WeChat Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

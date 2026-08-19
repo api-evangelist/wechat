@@ -1,0 +1,146 @@
+{
+  "item": [
+    {
+      "id": "85d92b2c-8638-4614-ab41-0e322c99f25b",
+      "name": "Login",
+      "description": {
+        "content": "Mini Program login and session exchange.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "272074c3-2410-48ba-b823-3b339eb2bc25",
+          "name": "auth.code2Session",
+          "request": {
+            "name": "auth.code2Session",
+            "description": {
+              "content": "Exchange a temporary login `code` returned by `wx.login()` in the Mini\nProgram client for a stable `openid` and `session_key`. The\n`session_key` is used to decrypt encrypted user data delivered by other\nMini Program APIs.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sns",
+                "jscode2session"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "appid",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppID."
+                },
+                {
+                  "disabled": false,
+                  "key": "secret",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppSecret."
+                },
+                {
+                  "disabled": false,
+                  "key": "js_code",
+                  "value": "<string>",
+                  "description": "(Required) Temporary login credential `code` from `wx.login()`."
+                },
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<string>",
+                  "description": "(Required) Must be `authorization_code`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3e39e119-43b7-4146-b875-e4344dd4ed6c",
+              "name": "Session exchange result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sns",
+                    "jscode2session"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "appid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "secret",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "js_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"openid\": \"string\",\n  \"session_key\": \"string\",\n  \"unionid\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.weixin.qq.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ddd6b212-679c-4c57-880c-3061ceeac13a",
+    "name": "WeChat Mini Program Server API (subset) Access Token Login API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side\nAPI hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed\nto bootstrap a Mini Program backend: exchanging a temporary login code for\na session via `auth.code2Session`, minting an application access token via\n`auth.getAccessToken`, and retrieving a paid-only UnionID via\n`auth.getPaidUnionId`.\n\nAuthentication for these foundational endpoints is keyed on the Mini\nProgram's AppID and AppSecret, passed as query parameters. Subsequent\nbusiness APIs (template messages, content moderation, analytics, QR codes,\nlogistics, etc.) require the `access_token` obtained from\n`auth.getAccessToken`.\n\n\nContact Support:\n Name: WeChat Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

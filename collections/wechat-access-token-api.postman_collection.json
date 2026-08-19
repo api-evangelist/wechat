@@ -1,0 +1,136 @@
+{
+  "item": [
+    {
+      "id": "a733a3bf-501f-4511-91d3-3826d237deda",
+      "name": "Access Token",
+      "description": {
+        "content": "Application-level access token management.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d867535f-b360-4da7-8bd4-0eb9f8e5b626",
+          "name": "auth.getAccessToken",
+          "request": {
+            "name": "auth.getAccessToken",
+            "description": {
+              "content": "Obtain the global application `access_token` for a Mini Program.\nReturned tokens are valid for 7200 seconds and must be cached and\nre-used across the application; concurrent calls will overwrite each\nother.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cgi-bin",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<string>",
+                  "description": "(Required) Must be set to `client_credential`."
+                },
+                {
+                  "disabled": false,
+                  "key": "appid",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppID from the WeChat Official Accounts Platform."
+                },
+                {
+                  "disabled": false,
+                  "key": "secret",
+                  "value": "<string>",
+                  "description": "(Required) Mini Program AppSecret."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5c960f92-17ca-4e4a-807c-861ef6f11126",
+              "name": "Access token response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cgi-bin",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "grant_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "secret",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"ACCESS_TOKEN\",\n  \"expires_in\": 7200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.weixin.qq.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ca904c25-374e-4154-a8b7-decf130174c7",
+    "name": "WeChat Mini Program Server API (subset) Access Token API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side\nAPI hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed\nto bootstrap a Mini Program backend: exchanging a temporary login code for\na session via `auth.code2Session`, minting an application access token via\n`auth.getAccessToken`, and retrieving a paid-only UnionID via\n`auth.getPaidUnionId`.\n\nAuthentication for these foundational endpoints is keyed on the Mini\nProgram's AppID and AppSecret, passed as query parameters. Subsequent\nbusiness APIs (template messages, content moderation, analytics, QR codes,\nlogistics, etc.) require the `access_token` obtained from\n`auth.getAccessToken`.\n\n\nContact Support:\n Name: WeChat Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

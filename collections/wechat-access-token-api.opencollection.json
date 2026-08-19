@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WeChat Mini Program Server API (subset) Access Token API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Access Token",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "auth.getAccessToken",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.weixin.qq.com/cgi-bin/token",
+            "params": [
+              {
+                "name": "grant_type",
+                "value": "",
+                "type": "query",
+                "description": "Must be set to `client_credential`."
+              },
+              {
+                "name": "appid",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppID from the WeChat Official Accounts Platform."
+              },
+              {
+                "name": "secret",
+                "value": "",
+                "type": "query",
+                "description": "Mini Program AppSecret."
+              }
+            ]
+          },
+          "docs": "Obtain the global application `access_token` for a Mini Program.\nReturned tokens are valid for 7200 seconds and must be cached and\nre-used across the application; concurrent calls will overwrite each\nother.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
