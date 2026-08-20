@@ -178,6 +178,12 @@ apis:
   baseURL: https://api.weixin.qq.com
   tags:
   - Identity
+  - Authentication
+  - Login
+  - Mobile
+  - Open Platform
+  tags_raw:
+  - Identity
   - OAuth
   - Login
   - Mobile
@@ -201,6 +207,12 @@ apis:
   humanURL: >-
     https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html
   tags:
+  - Identity
+  - Authentication
+  - Login
+  - Web
+  - QR Code
+  tags_raw:
   - Identity
   - OAuth
   - Login
@@ -246,6 +258,13 @@ apis:
   humanURL: https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html
   baseURL: https://api.weixin.qq.com
   tags:
+  - Official Accounts
+  - Subscription Account
+  - ServiceAccount
+  - Messaging
+  - Templates
+  - JS SDK
+  tags_raw:
   - Official Accounts
   - Subscription Account
   - Service Account
@@ -346,6 +365,12 @@ apis:
   humanURL: >-
     https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/mini-shop/
   tags:
+  - Commerce
+  - Shop
+  - Product
+  - Order
+  - Logistics
+  tags_raw:
   - Commerce
   - Shop
   - Products
