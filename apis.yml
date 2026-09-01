@@ -272,7 +272,7 @@ apis:
   tags:
   - Official Accounts
   - Subscription Account
-  - Service Account
+  - ServiceAccount
   - Messaging
   - Templates
   - JS SDK
