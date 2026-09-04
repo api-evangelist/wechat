@@ -43,7 +43,7 @@ tags:
 specificationVersion: '0.23'
 type: Index
 access: 3rd-Party
-position: Consumer
+position: Consuming
 created: '2026-05-22'
 modified: '2026-05-29'
 apis:
