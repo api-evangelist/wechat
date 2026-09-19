@@ -150,6 +150,13 @@ apis:
   tags:
   - Payments
   - WeChat Pay
+  - Service Providers
+  - Sub-Merchants
+  - Onboarding
+  - Profit Sharing
+  tags_raw:
+  - Payments
+  - WeChat Pay
   - Service Provider
   - Sub-Merchants
   - Onboarding
@@ -223,7 +230,7 @@ apis:
   - Authentication
   - Login
   - Web
-  - QR Code
+  - QR Codes
   tags_raw:
   - Identity
   - OAuth
