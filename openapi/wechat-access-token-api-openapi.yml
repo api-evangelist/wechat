@@ -1,30 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: WeChat Mini Program Server API (subset) Access Token API
   description: 'Subset OpenAPI description for the WeChat (Weixin) Mini Programs server-side
 
-    API hosted at `api.weixin.qq.com`. Covers the foundational endpoints needed
-
-    to bootstrap a Mini Program backend: exchanging a temporary login code for
-
-    a session via `auth.code2Session`, minting an application access token via
-
-    `auth.getAccessToken`, and retrieving a paid-only UnionID via
-
-    `auth.getPaidUnionId`.
-
-
-    Authentication for these foundational endpoints is keyed on the Mini
-
-    Program''s AppID and AppSecret, passed as query parameters. Subsequent
-
-    business APIs (template messages, content moderation, analytics, QR codes,
-
-    logistics, etc.) require the `access_token` obtained from
-
-    `auth.getAccessToken`.
-
-    '
+    API hosted at `api.weixin.qq.com`.'
   version: 1.0.0
   contact:
     name: WeChat Developer Community
@@ -49,9 +28,7 @@ paths:
 
         re-used across the application; concurrent calls will overwrite each
 
-        other.
-
-        '
+        other.'
       operationId: getAccessToken
       parameters:
       - in: query
